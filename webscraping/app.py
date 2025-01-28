@@ -19,6 +19,9 @@ async def get_skills(link):
         await page.fill("input#base-sign-in-modal_session_key", f"{email}")
         await page.fill("input#base-sign-in-modal_session_password", f"{senha}")
         
+        await page.click("button:text('Entrar')[type='submit']")
+        
+        await asyncio.sleep(10)
         
         await browser.close()
         
