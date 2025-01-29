@@ -45,18 +45,10 @@ async def get_skills(link, keyword):
         
         lis = ul.locator("li strong")
 
-        # li_count = await lis.count()
-        
-        # print(li_count)
-                
-        for i in range(25):
-            try:
-                await page.wait_for_selector('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div/div[1]/div/div[6]/section[2]/div/button/span') # botão "Exibir detalhes da qualificação"
-                await page.locator('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div/div[1]/div/div[6]/section[2]/div/button/span').click()
-                print("ERRO")
-            
-            except:
-                continue
+        for i in range(26):
+            await page.wait_for_selector('span:text("Exibir detalhes da qualificação")', timeout=100000) # botão "Exibir detalhes da qualificação"
+            await page.locator('span:text("Exibir detalhes da qualificação")').click()
+
             await page.wait_for_selector('xpath=/html/body/div[4]/div/div/div[2]/div/div[1]/ul')
             competencias = page.locator('xpath=/html/body/div[4]/div/div/div[2]/div/div[1]/ul') # lista de competencias
             
