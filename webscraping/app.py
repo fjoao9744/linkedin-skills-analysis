@@ -35,41 +35,40 @@ async def get_skills(link, keyword):
         await page.press("input#session_password", "Enter")
         
         await page.wait_for_selector("input[id^=jobs-search-box-keyword-id]")
-        
         await page.fill("input[id^=jobs-search-box-keyword-id]",
                         keyword)
         
         await page.press("input[id^=jobs-search-box-keyword-id]", "Enter")
         
         await page.wait_for_selector('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[1]/div/ul')
-        
         ul = page.locator('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[1]/div/ul')
         
         lis = ul.locator("li strong")
-        li_count = await lis.count()
+
+        # li_count = await lis.count()
+        
+        # print(li_count)
                 
-        for i in range(li_count):
-            await page.wait_for_selector('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div/div[1]/div/div[6]/section[2]/div/button/span')
-            await page.locator('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div/div[1]/div/div[6]/section[2]/div/button/span').click()
+        for i in range(25):
+            try:
+                await page.wait_for_selector('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div/div[1]/div/div[6]/section[2]/div/button/span') # botão "Exibir detalhes da qualificação"
+                await page.locator('xpath=/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div/div[1]/div/div[6]/section[2]/div/button/span').click()
+                print("ERRO")
             
+            except:
+                continue
             await page.wait_for_selector('xpath=/html/body/div[4]/div/div/div[2]/div/div[1]/ul')
-            competencias = page.locator('xpath=/html/body/div[4]/div/div/div[2]/div/div[1]/ul')
-            competencia = competencias.locator("li")
-            competencia_count = await competencia.count()
+            competencias = page.locator('xpath=/html/body/div[4]/div/div/div[2]/div/div[1]/ul') # lista de competencias
             
-            for c in range(competencia_count):
-                competencia_texto = await competencias.nth(c).inner_text()
-                
-                print(await reformat_string(competencia_texto))
-                break
-                
+            competencia_texto = await competencias.inner_text()
+            
+            print(await reformat_string(competencia_texto))
+            
+            await page.wait_for_selector('xpath=/html/body/div[4]/div/div/div[3]/button/span') # botão "concluir"
             await page.locator('xpath=/html/body/div[4]/div/div/div[3]/button/span').click()
             
             await lis.nth(i).click()
-            
-            
-        
-
+            await page.mouse.wheel(0, 100)
             
         await asyncio.sleep(30)
         
